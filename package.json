@@ -1,0 +1,98 @@
+{
+	"name": "vscode-hugo-image-importer",
+	"displayName": "Hugo Image Importer",
+	"description": "Drag-and-drop images into Hugo markdown content. Automatically moves the file to assets/images/YYYY/MM/ and inserts the reference into the frontmatter images array or the document body.",
+	"version": "0.1.0",
+	"publisher": "chriswiegman",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ChrisWiegman/vscode-hugo-image-importer.git"
+	},
+	"homepage": "https://github.com/ChrisWiegman/vscode-hugo-image-importer#readme",
+	"bugs": {
+		"url": "https://github.com/ChrisWiegman/vscode-hugo-image-importer/issues"
+	},
+	"engines": {
+		"vscode": "^1.118.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"hugo",
+		"markdown",
+		"image",
+		"static site",
+		"frontmatter"
+	],
+	"activationEvents": [
+		"onLanguage:markdown"
+	],
+	"main": "./out/src/extension.js",
+	"icon": "assets/icon.png",
+	"contributes": {
+		"configuration": {
+			"title": "Hugo Image Importer",
+			"properties": {
+				"hugoImageImporter.imagesDir": {
+					"type": "string",
+					"default": "assets/images",
+					"description": "Path to the Hugo images directory, relative to the workspace root. Supports both assets/ (Hugo Pipes) and static/ directories. Images are placed directly in this path or in a YYYY/MM/ subdirectory when organizeByDate is enabled. Ignored when usePageBundle is true."
+				},
+				"hugoImageImporter.organizeByDate": {
+					"type": "boolean",
+					"default": true,
+					"description": "When true (default), images are placed in a YYYY/MM/ subdirectory beneath imagesDir. When false, images are placed directly in imagesDir. Ignored when usePageBundle is true."
+				},
+				"hugoImageImporter.usePageBundle": {
+					"type": "boolean",
+					"default": false,
+					"description": "When true, the image is placed in the same directory as the markdown file (Hugo leaf bundle / page bundle mode) and referenced with a relative path. The imagesDir and organizeByDate settings are ignored."
+				},
+				"hugoImageImporter.frontmatterKey": {
+					"type": "string",
+					"default": "images",
+					"description": "The YAML frontmatter key used for the featured/hero image array. Change to 'image', 'cover', 'thumbnail', etc. to match your theme's schema. Only used when dropping into the frontmatter."
+				},
+				"hugoImageImporter.copyInsteadOfMove": {
+					"type": "boolean",
+					"default": true,
+					"description": "When true (default), the source image is copied to the destination. The original file is preserved in its source location. When false, the image is moved instead."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"test": "npm run compile && mocha",
+		"test:extension": "npm run compile && node ./out/test/runTests.js",
+		"lint": "biome lint src test"
+	},
+	"mocha": {
+		"spec": "out/test/hugoContent.test.js",
+		"timeout": 5000
+	},
+	"overrides": {
+		"diff": "^9.0.0",
+		"glob": "^13.0.6",
+		"serialize-javascript": "^7.0.5",
+		"uuid": "^14.0.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.15",
+		"@types/mocha": "^10.0.10",
+		"@types/node": "^25.6.2",
+		"@types/sinon": "^21.0.1",
+		"@types/vscode": "^1.118.0",
+		"@vscode/test-electron": "^2.5.2",
+		"@vscode/vsce": "^3.9.1",
+		"changie": "^1.24.0",
+		"mocha": "^11.7.5",
+		"sinon": "^22.0.0",
+		"ts-node": "^10.9.2",
+		"typescript": "^6.0.3"
+	}
+}
