@@ -31,7 +31,9 @@ jobs:
               echo "Tag $TAG_NAME does not match package.json version $PKG_VERSION"
               exit 1
             fi
+            PKG_NAME=$(node -p "require('./package.json').name")
             echo "version=$TAG_NAME" >> $GITHUB_OUTPUT
+            echo "vsix_file=${PKG_NAME}-${TAG_NAME}.vsix" >> $GITHUB_OUTPUT
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -61,9 +63,12 @@ jobs:
             fi
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ steps.vars.outputs.version }}
           body: ${{ steps.changelog.outputs.content }}
           files: "*.vsix"
+
+      - name: Publish to VS Code Marketplace
+        run: node_modules/.bin/vsce publish --pat ${{ secrets.VSCE_PAT }} --packagePath "./${{ steps.vars.outputs.vsix_file }}"
