@@ -102,7 +102,6 @@ export class HugoImageDropProvider implements vscode.DocumentDropEditProvider {
 		document: vscode.TextDocument,
 		position: vscode.Position,
 		dataTransfer: vscode.DataTransfer,
-		_token: vscode.CancellationToken,
 	): Promise<vscode.DocumentDropEdit | undefined> {
 		const wsFolder = vscode.workspace.getWorkspaceFolder(document.uri);
 		if (!wsFolder) return undefined;
