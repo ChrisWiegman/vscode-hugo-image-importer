@@ -17,6 +17,7 @@ async function isHugoSite(wsUri: vscode.Uri): Promise<boolean> {
 	for (const cfg of HUGO_CONFIG_FILES) {
 		try {
 			await vscode.workspace.fs.stat(vscode.Uri.joinPath(wsUri, cfg));
+
 			return true;
 		} catch {
 			// not found, try next
@@ -35,16 +36,23 @@ async function getDroppedImages(dataTransfer: vscode.DataTransfer): Promise<Drop
 
 	// text/uri-list handles multi-file drops from the OS and VS Code explorer
 	const uriListText = await dataTransfer.get("text/uri-list")?.asString();
+
 	if (uriListText) {
 		for (const line of uriListText.split(/\r?\n/)) {
 			const trimmed = line.trim();
+
 			if (!trimmed || trimmed.startsWith("#")) continue;
+
 			try {
 				const uri = vscode.Uri.parse(trimmed, true);
+
 				if (uri.scheme !== "file") continue;
+
 				const ext = path.extname(uri.path);
+
 				if (isSupportedImageExtension(ext)) {
 					const key = uri.toString();
+
 					if (!seen.has(key)) {
 						seen.set(key, { uri, name: path.basename(uri.path) });
 					}
@@ -58,10 +66,15 @@ async function getDroppedImages(dataTransfer: vscode.DataTransfer): Promise<Drop
 	// Iterate all items to catch individual DataTransferFile entries
 	for (const [, item] of dataTransfer) {
 		const file = item.asFile();
+
 		if (!file?.uri) continue;
+
 		const ext = path.extname(file.name);
+
 		if (!isSupportedImageExtension(ext)) continue;
+
 		const key = file.uri.toString();
+
 		if (!seen.has(key)) {
 			seen.set(key, { uri: file.uri, name: file.name });
 		}
@@ -72,6 +85,7 @@ async function getDroppedImages(dataTransfer: vscode.DataTransfer): Promise<Drop
 
 function isWithinWorkspace(wsUri: vscode.Uri, targetUri: vscode.Uri): boolean {
 	const wsPath = wsUri.path.endsWith("/") ? wsUri.path : `${wsUri.path}/`;
+
 	return targetUri.path.startsWith(wsPath);
 }
 
@@ -81,9 +95,11 @@ async function resolveDestUri(
 ): Promise<{ uri: vscode.Uri; name: string } | null> {
 	const ext = path.extname(name);
 	const base = path.basename(name, ext);
+
 	for (let i = 0; i <= 99; i++) {
 		const candidate = i === 0 ? name : `${base}-${i}${ext}`;
 		const uri = vscode.Uri.joinPath(dirUri, candidate);
+
 		try {
 			await vscode.workspace.fs.stat(uri);
 			// file exists, try next suffix
@@ -91,9 +107,11 @@ async function resolveDestUri(
 			return { uri, name: candidate };
 		}
 	}
+
 	void vscode.window.showWarningMessage(
 		`Hugo Image Importer: could not find a unique filename for ${name}`,
 	);
+
 	return null;
 }
 
@@ -104,11 +122,13 @@ export class HugoImageDropProvider implements vscode.DocumentDropEditProvider {
 		dataTransfer: vscode.DataTransfer,
 	): Promise<vscode.DocumentDropEdit | undefined> {
 		const wsFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+
 		if (!wsFolder) return undefined;
 
 		if (!(await isHugoSite(wsFolder.uri))) return undefined;
 
 		const imageFiles = await getDroppedImages(dataTransfer);
+
 		if (imageFiles.length === 0) return undefined;
 
 		const config = vscode.workspace.getConfiguration("hugoImageImporter", document.uri);
@@ -134,24 +154,31 @@ export class HugoImageDropProvider implements vscode.DocumentDropEditProvider {
 				const now = new Date();
 				const year = String(now.getFullYear());
 				const month = String(now.getMonth() + 1).padStart(2, "0");
+
 				subpath = `${year}/${month}`;
 				destDirUri = vscode.Uri.joinPath(wsFolder.uri, imagesDir, year, month);
 			} else {
 				destDirUri = vscode.Uri.joinPath(wsFolder.uri, imagesDir);
 			}
+
 			if (!isWithinWorkspace(wsFolder.uri, destDirUri)) {
 				void vscode.window.showErrorMessage(
 					"Hugo Image Importer: imagesDir setting must be within the workspace root",
 				);
+
 				return undefined;
 			}
+
 			await vscode.workspace.fs.createDirectory(destDirUri);
 		}
 
 		const urlPaths: Array<{ url: string; alt: string }> = [];
+
 		for (const { img, sanitizedName, alt } of pendingImages) {
 			const resolved = await resolveDestUri(destDirUri, sanitizedName);
+
 			if (!resolved) return undefined;
+
 			const { uri: destUri, name: finalName } = resolved;
 
 			if (copyInsteadOfMove) {
@@ -169,6 +196,7 @@ export class HugoImageDropProvider implements vscode.DocumentDropEditProvider {
 		}
 
 		let content = document.getText();
+
 		for (const { url, alt } of urlPaths) {
 			content = insertImageAtLine(content, url, position.line, alt, frontmatterKey);
 		}
@@ -178,10 +206,13 @@ export class HugoImageDropProvider implements vscode.DocumentDropEditProvider {
 			document.positionAt(0),
 			document.positionAt(document.getText().length),
 		);
+
 		workspaceEdit.replace(document.uri, fullRange, content);
 
 		const dropEdit = new vscode.DocumentDropEdit("");
+
 		dropEdit.additionalEdit = workspaceEdit;
+
 		return dropEdit;
 	}
 }
