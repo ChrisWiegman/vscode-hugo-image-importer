@@ -106,6 +106,7 @@ export default tseslint.config(
     rules: {
       "no-console": "off",
       "@typescript-eslint/no-require-imports": "off",
+      "@stylistic/padding-line-between-statements": "off",
     },
   },
 );
