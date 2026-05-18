@@ -1,3 +1,4 @@
+import stylistic from "@stylistic/eslint-plugin";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
@@ -6,8 +7,50 @@ export default tseslint.config(
   },
   {
     files: ["**/*.ts"],
+    plugins: { "@stylistic": stylistic },
     extends: [tseslint.configs.recommended],
     rules: {
+      // formatting
+      "@stylistic/indent": ["error", "tab"],
+      "@stylistic/quotes": ["error", "double"],
+      "@stylistic/semi": ["error", "always"],
+      "@stylistic/comma-dangle": ["error", "always-multiline"],
+      "@stylistic/object-curly-spacing": ["error", "always"],
+      "@stylistic/array-bracket-spacing": ["error", "never"],
+      "@stylistic/arrow-parens": ["error", "always"],
+      "@stylistic/brace-style": ["error", "1tbs"],
+      "@stylistic/space-before-function-paren": ["error", { anonymous: "never", named: "never", asyncArrow: "always" }],
+      "@stylistic/key-spacing": ["error", { beforeColon: false, afterColon: true }],
+      "@stylistic/keyword-spacing": ["error", { before: true, after: true }],
+      "@stylistic/space-before-blocks": "error",
+      "@stylistic/space-infix-ops": "error",
+      "@stylistic/no-trailing-spaces": "error",
+      "@stylistic/eol-last": ["error", "always"],
+      "@stylistic/no-multiple-empty-lines": ["error", { max: 1, maxEOF: 0 }],
+      "@stylistic/member-delimiter-style": ["error", {
+        multiline: { delimiter: "semi", requireLast: true },
+        singleline: { delimiter: "semi", requireLast: false },
+      }],
+      "@stylistic/type-annotation-spacing": ["error", { before: false, after: true }],
+      "@stylistic/comma-spacing": ["error", { before: false, after: true }],
+      "@stylistic/space-in-parens": ["error", "never"],
+      "@stylistic/function-call-spacing": ["error", "never"],
+      "@stylistic/template-curly-spacing": ["error", "never"],
+      "@stylistic/rest-spread-spacing": ["error", "never"],
+      "@stylistic/spaced-comment": ["error", "always"],
+      "@stylistic/semi-spacing": ["error", { before: false, after: true }],
+      "@stylistic/no-whitespace-before-property": "error",
+      "@stylistic/computed-property-spacing": ["error", "never"],
+      "@stylistic/dot-location": ["error", "property"],
+      "@stylistic/padded-blocks": ["error", "never"],
+      "@stylistic/padding-line-between-statements": [
+        "error",
+        { blankLine: "always", prev: "*", next: "if" },
+        { blankLine: "always", prev: "if", next: "*" },
+        { blankLine: "always", prev: ["const", "let", "var"], next: "*" },
+        { blankLine: "any", prev: ["const", "let", "var"], next: ["const", "let", "var"] },
+      ],
+
       // complexity
       "no-regex-spaces": "error",
       "no-extra-boolean-cast": "error",
