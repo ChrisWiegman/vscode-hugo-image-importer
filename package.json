@@ -2,7 +2,7 @@
 	"name": "vscode-hugo-image-importer",
 	"displayName": "Hugo Image Importer",
 	"description": "Drag-and-drop images into Hugo markdown content. Automatically moves the file to assets/images/YYYY/MM/ and inserts the reference into the frontmatter images array or the document body.",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"publisher": "ChrisWiegman",
 	"license": "MIT",
 	"repository": {
