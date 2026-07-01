@@ -14,7 +14,7 @@
 		"url": "https://github.com/ChrisWiegman/vscode-hugo-image-importer/issues"
 	},
 	"engines": {
-		"vscode": "^1.120.0"
+		"vscode": "^1.125.0"
 	},
 	"categories": [
 		"Other"
