@@ -84,17 +84,17 @@
 	"devDependencies": {
 		"@stylistic/eslint-plugin": "^5.10.0",
 		"@types/mocha": "^10.0.10",
-		"@types/node": "^26.1.0",
+		"@types/node": "^26.1.1",
 		"@types/sinon": "^22.0.0",
 		"@types/vscode": "^1.125.0",
 		"@vscode/test-electron": "^3.0.0",
 		"@vscode/vsce": "^3.9.2",
 		"changie": "^1.25.0",
-		"eslint": "^10.6.0",
+		"eslint": "^10.7.0",
 		"mocha": "^11.7.6",
 		"sinon": "^22.0.0",
 		"ts-node": "^10.9.2",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.62.1"
+		"typescript-eslint": "^8.64.0"
 	}
 }
