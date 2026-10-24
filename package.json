@@ -14,7 +14,7 @@
 		"url": "https://github.com/ChrisWiegman/vscode-hugo-image-importer/issues"
 	},
 	"engines": {
-		"vscode": "^1.138.0"
+		"vscode": "^1.140.0"
 	},
 	"categories": [
 		"Other"
@@ -78,23 +78,25 @@
 	"overrides": {
 		"diff": "^9.0.0",
 		"glob": "^13.0.6",
-		"serialize-javascript": "^7.1.1",
-		"uuid": "^14.0.2"
+		"serialize-javascript": "^7.1.4",
+		"uuid": "^14.0.2",
+		"@azure/msal-node": "^7.1.1"
+
 	},
 	"devDependencies": {
 		"@stylistic/eslint-plugin": "^5.10.0",
 		"@types/mocha": "^10.0.10",
-		"@types/node": "^26.6.2",
-		"@types/sinon": "^22.0.0",
-		"@types/vscode": "^1.138.0",
+		"@types/node": "^26.6.5",
+		"@types/sinon": "^22.0.1",
+		"@types/vscode": "^1.140.0",
 		"@vscode/test-electron": "^3.1.0",
 		"@vscode/vsce": "^4.0.0",
 		"changie": "^1.26.0",
-		"eslint": "^10.11.0",
-		"mocha": "^12.0.2",
+		"eslint": "^10.13.0",
+		"mocha": "^12.0.3",
 		"sinon": "^22.1.0",
 		"ts-node": "^10.9.2",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.70.0"
+		"typescript-eslint": "^8.72.0"
 	}
 }
